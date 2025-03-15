@@ -230,16 +230,32 @@ struct retro_core_option_v2_definition option_defs_us[] = {
       "PSX CPU Clock Speed (%)",
       NULL,
       "Overclock or under-clock the PSX CPU. The value has to be lower than 100 because of some slowdowns (cache misses, hw access penalties, etc.) that are not emulated. Try adjusting this if the game is too slow, too fast or hangs."
-#if defined(HAVE_PRE_ARMV7) && !defined(_3DS)
-      " Default is 50."
-#else
-      " Default is 57."
-#endif
+      " Default is 57 (auto)."
       ,
       NULL,
       "system",
       {
          { "auto", "Auto" },
+         { "10",  NULL },
+         { "11",  NULL },
+         { "12",  NULL },
+         { "13",  NULL },
+         { "14",  NULL },
+         { "15",  NULL },
+         { "16",  NULL },
+         { "17",  NULL },
+         { "18",  NULL },
+         { "19",  NULL },
+         { "20",  NULL },
+         { "21",  NULL },
+         { "22",  NULL },
+         { "23",  NULL },
+         { "24",  NULL },
+         { "25",  NULL },
+         { "26",  NULL },
+         { "27",  NULL },
+         { "28",  NULL },
+         { "29",  NULL },
          { "30",  NULL },
          { "31",  NULL },
          { "32",  NULL },
@@ -328,7 +344,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "force",    "Force" },
          { NULL, NULL },
       },
-#if defined(_3DS)
+#if defined(_3DS) || defined(_MIYOO)
       "disabled",
 #else
       "enabled",
@@ -365,7 +381,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "fixed_interval", "Fixed Interval" },
          { NULL, NULL },
       },
-      "disabled"
+      "auto_threshold"
    },
    {
       "pcsx_rearmed_frameskip_threshold",
@@ -393,7 +409,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "60", NULL },
          { NULL, NULL },
       },
-      "33"
+      "60"
    },
    {
       "pcsx_rearmed_frameskip_interval",
@@ -793,7 +809,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "enabled",  NULL },
          { NULL, NULL},
       },
-      "disabled",
+      "enabled",
    },
    {
       "pcsx_rearmed_gpu_unai_scale_hires",
