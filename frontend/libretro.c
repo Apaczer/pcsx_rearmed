@@ -923,6 +923,7 @@ static bool update_option_visibility(void)
          struct retro_core_option_display option_display;
          char gpu_unai_option[][40] = {
             "pcsx_rearmed_gpu_unai_blending",
+            "pcsx_rearmed_gpu_unai_interlace",
             "pcsx_rearmed_gpu_unai_lighting",
             "pcsx_rearmed_gpu_unai_fast_lighting",
             "pcsx_rearmed_gpu_unai_scale_hires",
@@ -2653,6 +2654,17 @@ static void update_variables(bool in_flight)
          pl_rearmed_cbs.gpu_unai.old_renderer = 1;
       else
          pl_rearmed_cbs.gpu_unai.old_renderer = 0;
+   }
+
+   var.key = "pcsx_rearmed_gpu_unai_interlace";
+   var.value = NULL;
+
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+   {
+      if (strcmp(var.value, "disabled") == 0)
+         pl_rearmed_cbs.gpu_unai.ilace_force = 0;
+      else if (strcmp(var.value, "enabled") == 0)
+         pl_rearmed_cbs.gpu_unai.ilace_force = 1;
    }
 
    var.key = "pcsx_rearmed_gpu_unai_lighting";

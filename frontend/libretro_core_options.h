@@ -784,6 +784,20 @@ struct retro_core_option_v2_definition option_defs_us[] = {
       "enabled",
    },
    {
+      "pcsx_rearmed_gpu_unai_interlace",
+      "(GPU) Interlace mode",
+      "Interlace mode",
+      "Enable simulated interlace mode, which skips every second scanline. Can be enabled to improve performance at the expense of display inaccuracies (artifacts etc.).",
+      NULL,
+      "gpu_unai",
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL},
+      },
+      "disabled",
+   },
+   {
       "pcsx_rearmed_gpu_unai_lighting",
       "(GPU) Lighting Effects",
       "Lighting Effects",
