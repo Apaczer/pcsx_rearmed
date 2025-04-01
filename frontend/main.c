@@ -710,6 +710,9 @@ int main(int argc, char *argv[])
 	}
 
 	printf("Exit..\n");
+#if defined(MIYOO)
+	plat_pre_finish();
+#endif
 	ClosePlugins();
 	SysClose();
 	menu_finish();
