@@ -354,7 +354,11 @@ static void menu_set_defconfig(void)
 	g_scaler = SCALE_4_3;
 	g_gamma = 100;
 	volume_boost = 0;
+#ifdef MIYOO
+	frameskip = 0; // 0 - auto
+#else
 	frameskip = 1; // 1 - off
+#endif
 	analog_deadzone = 50;
 	soft_scaling = 1;
 	soft_filter = 0;
