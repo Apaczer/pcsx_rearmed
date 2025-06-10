@@ -461,7 +461,7 @@ static int adj_src_dst(const SDL_Surface *sfc, int w, int pp, int *h,
     line_w = sfc->w;
   }
   if (sfc->h > *h)
-    *dst += sfc->pitch * (sfc->h - *h) / 2 / 2;
+    *dst += sfc->pitch * (sfc->h - *h) / 2 / (*h != 239 ? 2 : 1);
   else {
     *src += pp * (*h - sfc->h) / 2;
     *h = sfc->h;
