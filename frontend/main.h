@@ -30,12 +30,17 @@
 #define CHEATS_DIR         PCSX_DOT_DIR "cheats/"
 #define PATCHES_DIR        PCSX_DOT_DIR "patches/"
 #define CFG_DIR            PCSX_DOT_DIR "cfg/"
+#ifdef MIYOO
+#define BIOS_DIR           "/bios/"
+#define SCREENSHOTS_DIR    "/screenshots/"
+#else
 #ifndef PANDORA
 #define BIOS_DIR           PCSX_DOT_DIR "bios/"
 #define SCREENSHOTS_DIR    PCSX_DOT_DIR "screenshots/"
 #else
 #define BIOS_DIR           "/bios/"
 #define SCREENSHOTS_DIR    "/screenshots/"
+#endif
 #endif
 
 extern char cfgfile_basename[MAXPATHLEN];
