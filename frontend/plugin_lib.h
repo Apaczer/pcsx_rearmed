@@ -100,6 +100,7 @@ struct rearmed_cbs {
 		int fast_lighting;
 		int blending;
 		int scale_hires;
+		int pixel_skip;		
 	} gpu_unai;
 	struct {
 		int   dwActFixes;
