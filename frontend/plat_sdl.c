@@ -728,6 +728,9 @@ void plat_video_menu_end(void)
 {
   int do_flip = 0;
 
+  if (plat_target.vout_fullscreen)
+    SDL_Flip(plat_sdl_screen);
+  
   if (plat_sdl_overlay != NULL) {
     SDL_Rect dstrect = {
       (plat_sdl_screen->w - g_layer_w) / 2,
@@ -755,7 +758,7 @@ void plat_video_menu_end(void)
     forced_flips--;
     do_flip |= 1;
   }
-  if (do_flip)
+  if (do_flip || plat_target.vout_fullscreen)
     SDL_Flip(plat_sdl_screen);
 
   handle_window_resize();
@@ -770,8 +773,10 @@ void plat_video_menu_leave(void)
   if (plat_sdl_overlay != NULL || plat_sdl_gl_active)
     memset(shadow_fb, 0, g_menuscreen_w * g_menuscreen_h * 2);
 
-  if (plat_target.vout_fullscreen)
+  if (plat_target.vout_fullscreen) {
     change_mode(fs_w, fs_h);
+    SDL_Flip(plat_sdl_screen);
+  }
   overlay_or_gl_check_enable();
   centered_clear();
 
