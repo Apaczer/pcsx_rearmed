@@ -54,11 +54,14 @@ static void check_mode_change(int force)
 
   gpu.state.downscale_active =
     gpu.get_downscale_buffer != NULL && gpu.state.downscale_enable
-    && (w >= 512 || h >= 256);
+    && (w >= 512 || (w > 320 && h >= 256));
 
   if (gpu.state.downscale_active) {
     w_out = w < 512 ? w : 320;
-    h_out = h < 256 ? h : h / 2;
+    if (w > 320 && h >= 256)
+      h_out = h / 2;
+    else
+      h_out = h;
   }
 
   // width|rgb24 change?
