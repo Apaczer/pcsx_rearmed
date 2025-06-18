@@ -342,7 +342,6 @@ void GPUwriteStatus(uint32_t data)
       break;
     case 0x05:
       src_x = data & 0x3ff; src_y = (data >> 10) & 0x1ff;
-      if (src_x != gpu.screen.src_x || src_y != gpu.screen.src_y) {
         gpu.screen.src_x = src_x;
         gpu.screen.src_y = src_y;
         renderer_notify_scanout_change(src_x, src_y);
@@ -353,7 +352,6 @@ void GPUwriteStatus(uint32_t data)
             gpu.frameskip.last_flip_frame = *gpu.state.frame_count;
           }
         }
-      }
       break;
     case 0x06:
       gpu.screen.x1 = data & 0xfff;
