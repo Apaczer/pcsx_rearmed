@@ -455,6 +455,15 @@ INC_LIBRETRO_COMMON := 1
 
 endif # $(PLATFORM) == "libretro"
 
+HOMEPATH ?= $(HOME)
+
+ifeq ($(PROFILE), YES)
+CFLAGS += -fprofile-generate=$(HOMEPATH)/profile
+LDFLAGS += -lgcov
+else ifeq ($(PROFILE), APPLY)
+CFLAGS += -fprofile-use=./profile -fbranch-probabilities
+endif
+
 ifeq "$(USE_RTHREADS)" "1"
 OBJS += frontend/libretro-rthreads.o
 OBJS += deps/libretro-common/features/features_cpu.o
