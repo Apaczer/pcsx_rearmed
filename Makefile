@@ -408,8 +408,9 @@ ifeq "$(PLATFORM)" "miyoo"
 HOMEPATH = /mnt
 OBJS += frontend/libpicofe/in_sdl.o
 OBJS += frontend/libpicofe/linux/in_evdev.o
-OBJS += frontend/libpicofe/plat_dummy.o
-OBJS += frontend/plat_sdl.o
+OBJS += frontend/plat_suniv.o
+#OBJS += frontend/libpicofe/plat_dummy.o
+#OBJS += frontend/plat_sdl.o
 frontend/main.o frontend/menu.o: CFLAGS += -include frontend/320240/ui_miyoo.h
 USE_PLUGIN_LIB = 1
 USE_FRONTEND = 1
