@@ -480,7 +480,12 @@ static void centered_blit(int doffs, const void *src_, int w, int h,
     SDL_LockSurface(plat_sdl_screen);
   dst = plat_sdl_screen->pixels;
   dstride = plat_sdl_screen->pitch / 2;
-  w = adj_src_dst(plat_sdl_screen, w, sstride, &h, &dst, &src);
+#ifndef BUILTIN_GPU_UNAI
+  if (h != 255 && h != 217 && !(h == 127 && pl_rearmed_cbs.gpu_unai.scale_hires && strcmp(Config.Gpu, "gpu_unai.so") == 0))   // for some native res. intros e.g. THPS3 PAL (255), Wipeout PAL (217) && half of 255(127 thus) res. for in-game e.g. ColinMcRR 2 PAL
+#else
+  if (h != 255 && h != 217 && !(h == 127 && pl_rearmed_cbs.gpu_unai.scale_hires && strcmp(Config.Gpu, "builtin_gpu") == 0))
+#endif
+      w = adj_src_dst(plat_sdl_screen, w, sstride, &h, &dst, &src);
 
   if (bgr24) {
     for (; h > 0; dst += dstride, src += sstride, h--)
