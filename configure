@@ -208,7 +208,7 @@ if [ "$show_help" = "yes" ]; then
   echo "  --dynarec=NAME           select dynamic recompiler [guessed]"
   echo "                           available: $dynarec_list"
   echo "influential environment variables:"
-  echo "  CROSS_COMPILE CC CXX AS AR CFLAGS ASFLAGS LDFLAGS LDLIBS"
+  echo "  CROSS_COMPILE CC CXX AS AR CFLAGS ASFLAGS LDFLAGS LDLIBS PROFILE PROFILE_PATH"
   exit 1
 fi
 
@@ -550,6 +550,17 @@ fi
 if check_c64_tools; then
   have_c64x_dsp="yes"
 fi
+
+# check if we are profiling with gcc
+case "$PROFILE" in
+YES)
+  CFLAGS="$CFLAGS -fprofile-generate=$PROFILE_PATH/profile"
+  LDFLAGS="$LDFLAGS -lgcov"
+  ;;
+APPLY)
+  CFLAGS="$CFLAGS -fprofile-use=./profile -fbranch-probabilities"
+  ;;
+esac
 
 # declare available dynamic plugins
 if [ "$have_dynamic" = "yes" ]; then
