@@ -825,24 +825,6 @@ struct retro_core_option_v2_definition option_defs_us[] = {
       },
       "enabled",
    },
-   {
-      "pcsx_rearmed_gpu_unai_scale_hires",
-      "(GPU) Hi-Res Downscaling",
-      "Hi-Res Downscaling",
-      "When enabled, games that run in high resolution video modes (480i, 512i) will be downscaled to 320x240. Can improve performance, and is recommended on devices with native 240p display resolutions.",
-      NULL,
-      "gpu_unai",
-      {
-         { "disabled", NULL },
-         { "enabled",  NULL },
-         { NULL, NULL},
-      },
-#ifdef _MIYOO
-      "enabled",
-#else
-      "disabled",
-#endif
-   },
 #endif /* GPU_UNAI */
    {
       "pcsx_rearmed_spu_reverb",

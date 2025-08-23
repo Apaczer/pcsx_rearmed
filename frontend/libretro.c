@@ -926,7 +926,6 @@ static bool update_option_visibility(void)
             "pcsx_rearmed_gpu_unai_interlace",
             "pcsx_rearmed_gpu_unai_lighting",
             "pcsx_rearmed_gpu_unai_fast_lighting",
-            "pcsx_rearmed_gpu_unai_scale_hires",
          };
 
          option_display.visible = show_advanced_gpu_unai_settings;
@@ -2700,16 +2699,6 @@ static void update_variables(bool in_flight)
          pl_rearmed_cbs.gpu_unai.blending = 1;
    }
 
-   var.key = "pcsx_rearmed_gpu_unai_scale_hires";
-   var.value = NULL;
-
-   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
-   {
-      if (strcmp(var.value, "disabled") == 0)
-         pl_rearmed_cbs.gpu_unai.scale_hires = 0;
-      else if (strcmp(var.value, "enabled") == 0)
-         pl_rearmed_cbs.gpu_unai.scale_hires = 1;
-   }
 #endif // GPU_UNAI
 
    var.value = NULL;
