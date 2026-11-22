@@ -82,6 +82,7 @@ struct rearmed_cbs {
 	unsigned char alt_flip;
 	unsigned char gpu_caps;   // gpu_plugin_caps
 	unsigned char gpu_hacks;  // gpu_plugin_hacks
+	unsigned char dscale;     // downscaling cspace_blit is active
 	unsigned char pad[2];
 	int   thread_rendering;   // -1 auto, 0 off, 1 on
 	struct {

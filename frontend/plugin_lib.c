@@ -294,17 +294,22 @@ static void pl_vout_set_mode(int w, int h, int raw_w, int raw_h, int bpp)
 		}
 	}
 	pl_rearmed_cbs.cspace_blit = cspace_f->blit;
+	pl_rearmed_cbs.dscale = 0;
 	if (pl_rearmed_cbs.scale_hires) {
 		if (raw_w >= 640-4) {
 			pl_rearmed_cbs.cspace_blit = cspace_f->blit_dscale640;
 			vout_w = 320;
+			pl_rearmed_cbs.dscale = 1;
 		}
 		else if (raw_w >= 512-4) {
 			pl_rearmed_cbs.cspace_blit = cspace_f->blit_dscale512;
 			vout_w = 320;
+			pl_rearmed_cbs.dscale = 1;
 		}
-		if (vout_h > 256)
+		if (vout_h > 256) {
 			vout_h /= 2;
+			pl_rearmed_cbs.dscale = 1;
+		}
 	}
 
 	assert(vout_h >= 192);
@@ -392,7 +397,7 @@ static void pl_vout_flip(const void *vram_, int vram_ofs, int bgr24,
 		flip_clear_counter--;
 	}
 
-	if (pl_plat_blit)
+	if (pl_plat_blit && !pl_rearmed_cbs.dscale)
 	{
 		pl_plat_blit(doffs, vram + vram_ofs, w, h, 1024, bgr24);
 		goto out_hud;

@@ -336,7 +336,7 @@ static void uyvy_to_rgb565(void *d, int pixels)
 
 static void overlay_resize(int force)
 {
-  int x2_mul = !in_menu && plat_target.vout_method > 1 ? 2 : 1; // lame
+  int x2_mul = !in_menu && plat_target.vout_method > 1 && !pl_rearmed_cbs.dscale ? 2 : 1; // lame
   int w = in_menu ? g_menuscreen_w : psx_w;
   int h = in_menu ? g_menuscreen_h : psx_h;
 
@@ -572,6 +572,8 @@ static void *setup_blit_callbacks(int w, int h)
   pl_plat_blit = NULL;
   pl_plat_hud_print = NULL;
   if (plat_sdl_overlay != NULL) {
+    if (pl_rearmed_cbs.dscale)
+      return shadow_fb;
     pl_plat_clear = plat_sdl_overlay_clear;
     pl_plat_blit = overlay_blit;
     pl_plat_hud_print = overlay_hud_print;
@@ -585,6 +587,9 @@ static void *setup_blit_callbacks(int w, int h)
     if (!SDL_MUSTLOCK(plat_sdl_screen) && w == plat_sdl_screen->w &&
         h == plat_sdl_screen->h)
       return plat_sdl_screen->pixels;
+
+    if (pl_rearmed_cbs.dscale)
+      return shadow_fb;
 
     pl_plat_blit = centered_blit;
     pl_plat_hud_print = centered_hud_print;
@@ -712,14 +717,35 @@ void *plat_gvideo_flip(void)
       (plat_sdl_screen->h - g_layer_h) / 2,
       g_layer_w, g_layer_h
     };
+    if (pl_rearmed_cbs.dscale) {
+      SDL_LockYUVOverlay(plat_sdl_overlay);
+      rgb565_to_uyvy(plat_sdl_overlay->pixels[0], shadow_fb, psx_w * psx_h);
+      SDL_UnlockYUVOverlay(plat_sdl_overlay);
+      ret = shadow_fb;
+    }
     SDL_DisplayYUVOverlay(plat_sdl_overlay, &dstrect);
   }
   else if (plat_sdl_gl_active) {
     gl_flip_v(shadow_fb, psx_w, psx_h, g_scaler != SCALE_FULLSCREEN ? gl_vertices : NULL);
     ret = shadow_fb;
   }
-  else
+  else {
+    if (pl_rearmed_cbs.dscale && pl_vout_buf == shadow_fb) {
+      if (SDL_MUSTLOCK(plat_sdl_screen))
+        SDL_LockSurface(plat_sdl_screen);
+      unsigned short *dst = plat_sdl_screen->pixels;
+      int dstride = plat_sdl_screen->pitch / 2;
+      const unsigned short *src = shadow_fb;
+      int h = psx_h;
+      int w = adj_src_dst(plat_sdl_screen, psx_w, psx_w, &h, &dst, &src);
+      for (; h > 0; dst += dstride, src += psx_w, h--)
+        memcpy(dst, src, w * 2);
+      if (SDL_MUSTLOCK(plat_sdl_screen))
+        SDL_UnlockSurface(plat_sdl_screen);
+      ret = shadow_fb;
+    }
     do_flip |= 2;
+  }
 
   if (forced_flips > 0) {
     forced_flips--;
